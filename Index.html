@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corrida Nascar - Tela Inicial</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    background-color: #111;
+    color: #fff;
+  }
+  #gameContainer {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  #backgroundTrack {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background-image: url('https://i.imgur.com/0MZgYpG.png'); /* Exemplo de pista top-down */
+    background-size: cover;
+    animation: moveTrack 4s linear infinite;
+    z-index: 0;
+  }
+  @keyframes moveTrack {
+    0% { transform: translate(0,0); }
+    100% { transform: translate(-50%, -50%); }
+  }
+  .car {
+    position: absolute;
+    width: 60px;
+    height: 120px;
+    z-index: 1;
+    transition: all 0.5s ease;
+  }
+  #menu {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 2;
+    width: 90%;
+  }
+  #menu input {
+    padding: 10px;
+    font-size: 18px;
+    width: 80%;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: none;
+  }
+  .car-selection {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  .car-card {
+    background: rgba(255,255,255,0.1);
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100px;
+  }
+  .car-card img {
+    width: 100%;
+    height: auto;
+  }
+  .car-card.selected {
+    border: 3px solid yellow;
+  }
+  #startBtn {
+    padding: 12px 25px;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #ffcc00;
+    color: #000;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div id="gameContainer">
+  <div id="backgroundTrack"></div>
+
+  <div id="menu">
+    <h2>Nome do Piloto:</h2>
+    <input type="text" id="pilotName" placeholder="Digite seu nome">
+
+    <h3>Escolha seu carro:</h3>
+    <div class="car-selection">
+      <div class="car-card" data-car="1" data-speed="5" data-acceleration="3">
+        <img src="https://i.imgur.com/2R9Y3lD.png" alt="Carro 1">
+        <p>Vel: 5 | Acc: 3</p>
+      </div>
+      <div class="car-card" data-car="2" data-speed="4" data-acceleration="5">
+        <img src="https://i.imgur.com/0Z8eR1M.png" alt="Carro 2">
+        <p>Vel: 4 | Acc: 5</p>
+      </div>
+      <div class="car-card" data-car="3" data-speed="3" data-acceleration="4">
+        <img src="https://i.imgur.com/8n5kTjE.png" alt="Carro 3">
+        <p>Vel: 3 | Acc: 4</p>
+      </div>
+    </div>
+
+    <button id="startBtn">Iniciar Corrida</button>
+  </div>
+</div>
+
+<script>
+  const carCards = document.querySelectorAll('.car-card');
+  let selectedCar = null;
+
+  carCards.forEach(card => {
+    card.addEventListener('click', () => {
+      carCards.forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selectedCar = {
+        id: card.dataset.car,
+        speed: parseInt(card.dataset.speed),
+        acceleration: parseInt(card.dataset.acceleration)
+      };
+    });
+  });
+
+  const startBtn = document.getElementById('startBtn');
+  startBtn.addEventListener('click', () => {
+    const pilotName = document.getElementById('pilotName').value.trim();
+    if(!pilotName) {
+      alert('Digite o nome do piloto!');
+      return;
+    }
+    if(!selectedCar) {
+      alert('Escolha um carro!');
+      return;
+    }
+    alert(`Bem-vindo, ${pilotName}!\nCarro selecionado: ${selectedCar.id}\nVelocidade: ${selectedCar.speed}, Aceleração: ${selectedCar.acceleration}\n\nAgora você pode começar a corrida!`);
+    // Aqui podemos redirecionar para a pista/corrida
+  });
+</script>
+</body>
+</html>
